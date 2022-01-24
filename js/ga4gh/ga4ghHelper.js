@@ -76,6 +76,9 @@ function ga4ghSearch(options) {
                 .then(function (json) {
                     var nextPageToken, tmp
 
+                    // CanDIG Modification
+                    json = json["results"];
+
                     if (json) {
 
                         tmp = decode ? decode(json) : json
@@ -180,8 +183,9 @@ function ga4ghSearchCallSets(options) {
         ga4ghSearch({
             url: options.url + "/callsets/search",
             body: {
-                "variantSetIds": options.variantSetIds,
-                "pageSize": "10000"
+                //CanDIG Modification: to accept only one variantSetId
+                "variantSetId": options.variantSetIds[0],
+                //"pageSize": "10000"
             },
             decode: function (json) {
 

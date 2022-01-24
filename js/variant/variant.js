@@ -286,22 +286,23 @@ function createGAVariant(json) {
     variant.quality = json.quality
     variant.filter = arrayToString(json.filter)
 
-
+    
+    // CanDIG Modification: the following part of code is removed
     // Flatten GA4GH attributes array
-    variant.info = {}
-    if (json.info) {
-        Object.keys(json.info).forEach(function (key) {
-            var value,
-                valueArray = json.info[key]
+    // variant.info = {}
+    // if (json.info) {
+    //     Object.keys(json.info).forEach(function (key) {
+    //         var value,
+    //             valueArray = json.info[key]
 
-            if (Array.isArray(valueArray)) {
-                value = valueArray.join(",")
-            } else {
-                value = valueArray
-            }
-            variant.info[key] = value
-        })
-    }
+    //         if (Array.isArray(valueArray)) {
+    //             value = valueArray.join(",")
+    //         } else {
+    //             value = valueArray
+    //         }
+    //         variant.info[key] = value
+    //     })
+    // }
 
 
     // Need to build a hash of calls for fast lookup
