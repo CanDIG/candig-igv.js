@@ -242,9 +242,7 @@ function ga4ghSearchReadAndCallSets(options) {
 }
 
 function ga4ghHeaders() {
-    return {
-        "Cache-Control": "no-cache"
-    }
+    return {};
 }
 
 export {

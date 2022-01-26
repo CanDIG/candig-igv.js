@@ -88,67 +88,63 @@ Ga4ghAlignmentReader.prototype.readAlignments = function (chr, bpStart, bpEnd) {
 
 
     // CanDIG Modification
-    // The entire function below was rewritten
 
     function getChrAliasTable() {
 
         if (self.chrAliasTable) {
-            return Promise.resolve(self.chrAliasTable);
+            return Promise.resolve(self.chrAliasTable)
+
         } else {
-            return new Promise(function (fulfill, reject) {
 
-                self.readMetadata()
-                    .then(function (json) {
+            return self.readMetadata()
 
-                        self.chrAliasTable = {};
+                .then(function (json) {
 
-                        if (igv.browser && json.readGroups && json.readGroups.length > 0) {
+                    self.chrAliasTable = {}
 
-                            var referenceSetId = json.readGroups[0].referenceSetId;
+                    if (genome && json.readGroups && json.readGroups.length > 0) {
 
-                            if (referenceSetId) {
+                        var referenceSetId = json.readGroups[0].referenceSetId
 
-                                // Query for reference names to build an alias table (map of genome ref names -> dataset ref names)
-                                var readURL = self.url + "/references/search";
+                        if (referenceSetId) {
 
-                                igv.ga4ghSearch({
-                                    url: readURL,
-                                    body: {
-                                        "referenceSetId": referenceSetId
-                                    },
-                                    decode: function (j) {
-                                        return j.references;
-                                    }
-                                })
-                                    .then(function (references) {
-                                        references.forEach(function (ref) {
-                                            var refName = ref.name,
-                                                alias = igv.browser.genome.getChromosomeName(refName);
-                                            self.chrAliasTable[alias] = refName;
-                                        });
-                                        fulfill(self.chrAliasTable);
+                            // Query for reference names to build an alias table (map of genome ref names -> dataset ref names)
+                            var readURL = self.url + "/references/search"
 
+                            return ga4ghSearch({
+                                url: readURL,
+                                body: {
+                                    "referenceSetId": referenceSetId
+                                },
+                                decode: function (j) {
+                                    return j.references
+                                }
+                            })
+                                .then(function (references) {
+
+
+                                    references.forEach(function (ref) {
+                                        var refName = ref.name,
+                                            alias = genome.getChromosomeName(refName)
+                                        self.chrAliasTable[alias] = refName
                                     })
-                                    .catch(reject);
-                            }
-                            else {
 
-                                // Try hardcoded constants -- workaround for non-compliant data at Google
-                                populateChrAliasTable(self.chrAliasTable, self.config.datasetId);
 
-                                fulfill(self.chrAliasTable);
-                            }
+                                    return self.chrAliasTable
+
+                                })
+                        } else {
+
+                            // Try hardcoded constants -- workaround for non-compliant data at Google
+                            populateChrAliasTable(self.chrAliasTable, self.config.datasetId)
+
+                            return self.chrAliasTable
                         }
-
-                        else {
-                            // No browser object, can't build map.  This can occur when run from unit tests
-                            fulfill(self.chrAliasTable);
-                        }
-                    })
-                    .catch(reject);
-
-
-            });
+                    } else {
+                        // No browser object, can't build map.  This can occur when run from unit tests
+                        return self.chrAliasTable
+                    }
+                })
         }
     }
 

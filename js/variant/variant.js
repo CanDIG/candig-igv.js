@@ -30,13 +30,12 @@ import {StringUtils} from "../../node_modules/igv-utils/src/index.js"
 const knownAltBases = new Set(["A", "C", "T", "G"].map(c => c.charCodeAt(0)))
 
 function createVCFVariant(tokens) {
-    return new Variant(tokens)
+    return new VCFVariant(tokens)
 }
 
-
-class Variant {
-
+class VCFVariant extends Variant {
     constructor(tokens) {
+        super()
         this.chr = tokens[0] // TODO -- use genome aliases
         this.pos = parseInt(tokens[1])
         this.names = tokens[2]    // id in VCF
@@ -46,6 +45,33 @@ class Variant {
         this.filter = tokens[6]
         this.info = getInfoObject(tokens[7])
         this.init()
+    }
+
+    init() {
+        return super().init()
+    }
+
+    popupData(genomicLocation, genomeId) {
+        return super().popupData(genomicLocation, genomeId)
+    }
+
+    isRefBlock() {
+        return super().isRefBlock()
+    }
+}
+
+
+class Variant {
+
+    constructor() {
+        this.chr = null
+        this.pos = null
+        this.names = null
+        this.referenceBases = null
+        this.alternateBases = null
+        this.quality = null
+        this.filter = null
+        this.info = {}
     }
 
     init() {
@@ -268,7 +294,6 @@ function arrayToString(value, delim) {
 
 
 /**
- * @deprecated - the GA4GH API has been deprecated.  This code no longer maintained.
  * @param json
  * @returns {Variant}
  */
@@ -287,22 +312,21 @@ function createGAVariant(json) {
     variant.filter = arrayToString(json.filter)
 
     
-    // CanDIG Modification: the following part of code is removed
     // Flatten GA4GH attributes array
-    // variant.info = {}
-    // if (json.info) {
-    //     Object.keys(json.info).forEach(function (key) {
-    //         var value,
-    //             valueArray = json.info[key]
+    variant.info = {}
+    if (json.info) {
+        Object.keys(json.info).forEach(function (key) {
+            var value,
+                valueArray = json.info[key]
 
-    //         if (Array.isArray(valueArray)) {
-    //             value = valueArray.join(",")
-    //         } else {
-    //             value = valueArray
-    //         }
-    //         variant.info[key] = value
-    //     })
-    // }
+            if (Array.isArray(valueArray)) {
+                value = valueArray.join(",")
+            } else {
+                value = valueArray
+            }
+            variant.info[key] = value
+        })
+    }
 
 
     // Need to build a hash of calls for fast lookup
@@ -323,7 +347,7 @@ function createGAVariant(json) {
         })
     }
 
-    init(variant)
+    variant.init();
 
     return variant
 
