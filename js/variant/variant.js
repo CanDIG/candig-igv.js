@@ -53,7 +53,6 @@ function createVCFVariant(tokens) {
 
 
 /**
- * @deprecated - the GA4GH API has been deprecated.  This code no longer maintained.
  * @param json
  * @returns {Variant}
  */
