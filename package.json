@@ -1,5 +1,5 @@
 {
-  "name": "igv",
+  "name": "@candig/igv",
   "version": "2.10.5",
   "main": "dist/igv.esm.js",
   "browser": "dist/igv.js",
