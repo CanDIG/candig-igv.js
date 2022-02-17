@@ -106,7 +106,7 @@ function createGAVariant(json) {
         })
     }
 
-    init(variant)
+    variant.init()
 
     return variant
 

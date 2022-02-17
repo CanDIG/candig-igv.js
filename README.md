@@ -1,3 +1,7 @@
+# @candig/igv
+
+This is a CanDIG fork of the igv.js, which adds support for Reads and Variants API of [candig-server](https://github.com/candig/candig-server).
+
 # igv.js
 ![build](https://github.com/igvteam/igv.js/actions/workflows/ci_build.yml/badge.svg)
 [![](https://img.shields.io/npm/dw/igv.svg)](https://www.npmjs.com/package/igv)
