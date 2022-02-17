@@ -59,8 +59,9 @@ Ga4ghVariantReader.prototype.readHeader = function () {
                 url: readURL,
                 fields: "nextPageToken,callSets(id,name)",
                 body: {
-                    "variantSetIds": (Array.isArray(self.variantSetId) ? self.variantSetId : [self.variantSetId]),
-                    "pageSize": "10000"
+                    // CanDIG modification
+                    "variantSetId": (Array.isArray(self.variantSetId) ? self.variantSetId : self.variantSetId),
+                    // "pageSize": "10000"
                 },
                 decode: function (json) {
                     // If specific callSetIds are specified filter to those
@@ -115,8 +116,8 @@ Ga4ghVariantReader.prototype.readFeatures = function (chr, bpStart, bpEnd) {
                     "variantSetIds": (Array.isArray(self.variantSetId) ? self.variantSetId : [self.variantSetId]),
                     "callSetIds": (self.callSetIds ? self.callSetIds : undefined),
                     "referenceName": queryChr,
-                    "start": bpStart.toString(),
-                    "end": bpEnd.toString(),
+                    "start": Math.ceil(bpStart).toString(),  // CanDIG modification
+                    "end": Math.ceil(bpEnd).toString(),  // CanDIG modification
                     "pageSize": "10000"
                 },
                 decode: function (json) {

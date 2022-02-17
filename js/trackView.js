@@ -394,11 +394,13 @@ class TrackView {
         for (let viewport of reloadableViewports) {
             await viewport.loadFeatures()
         }
+        
+        if (this.disposed) return   // Track was removed during load
 
         // Very special case for variant tracks in multilocus view.  The # of rows to allocate to the variant (site)
         // section depends on data from all the views.  We only need to adjust this however if any data was loaded
         // (i.e. reloadableViewports.length > 0)
-        if (typeof this.track.variantRowCount === 'function' && reloadableViewports.length > 0) {
+        if (this.track && typeof this.track.variantRowCount === 'function' && reloadableViewports.length > 0) {
             let maxRow = 0
             for (let viewport of this.viewports) {
                 if (viewport.tile && viewport.tile.features) {
@@ -414,7 +416,6 @@ class TrackView {
             }
         }
 
-        if (this.disposed) return   // Track was removed during load
 
         if (this.track.autoscale) {
             let allFeatures = []

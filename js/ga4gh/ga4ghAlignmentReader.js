@@ -75,8 +75,8 @@ Ga4ghAlignmentReader.prototype.readAlignments = function (chr, bpStart, bpEnd) {
             return ga4ghSearch({
                 url: readURL,
                 body: {
-                    "readGroupSetIds": [self.readGroupSetIds],
-                    "referenceName": queryChr,
+                    "readGroupIds": self.config.readGroupIds,  // CanDIG Modification
+                    "referenceId": self.config.referenceId,  // CanDIG Modification
                     "start": bpStart,
                     "end": bpEnd,
                     "pageSize": "10000"
@@ -87,10 +87,11 @@ Ga4ghAlignmentReader.prototype.readAlignments = function (chr, bpStart, bpEnd) {
         })
 
 
+    // CanDIG Modification
+
     function getChrAliasTable() {
 
         if (self.chrAliasTable) {
-
             return Promise.resolve(self.chrAliasTable)
 
         } else {
