@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/igvteam/igv.js/issues"
   },
-  "deprecated": true,
+  "deprecated": false,
   "homepage": "https://igv.org",
   "keywords": [
     "IGV",
